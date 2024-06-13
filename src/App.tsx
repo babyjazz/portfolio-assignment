@@ -1,7 +1,11 @@
+import { Provider } from 'react-redux'
+import Router from '@/router'
+import { store } from '@/store'
+
 export default function App() {
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   )
 }
