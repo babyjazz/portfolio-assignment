@@ -19,6 +19,7 @@ export default function Portfolio() {
   }, [dispatch])
 
   useEffect(() => {
+    console.log('debug #11')
     if (isConnected) {
       getLevel1Sumamry()
     }

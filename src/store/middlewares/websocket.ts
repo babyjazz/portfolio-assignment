@@ -4,9 +4,8 @@ import { authSlice } from '@/store/authentication'
 import { portfolioSlice } from '@/store/portfolio'
 import { websocketSlice } from '@/store/websocket'
 import { IWebsocketMeta } from '@/store/websocket/slice'
+import setIntervalIntermediate from '@/utils/setIntervalIntermediate'
 import { Middleware } from '@reduxjs/toolkit'
-
-const portfolioIntervalDuration = 5000
 
 export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
   let wss: WebSocket | null
@@ -20,6 +19,18 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
             wss = new WebSocket(_action.payload)
             wss.onopen = () => {
               dispatch(websocketSlice.actions.connected())
+
+              // Interval fetch portfolio every 5s
+              if (!portfolioInterval) {
+                portfolioInterval = setIntervalIntermediate(() => {
+                  dispatch(
+                    websocketSlice.actions.send({
+                      n: WssFunctionNameMessageType.GetLevel1Summary,
+                      o: JSON.stringify({ OMSId: 1 }),
+                    }),
+                  )
+                }, 5000)
+              }
             }
             wss.onmessage = (e) => {
               try {
@@ -30,18 +41,6 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
                     o: JSON.parse(data?.o || '{}'),
                   }),
                 )
-
-                // Interval fetch portfolio every 5s
-                if (!portfolioInterval) {
-                  portfolioInterval = setInterval(() => {
-                    dispatch(
-                      websocketSlice.actions.send({
-                        n: WssFunctionNameMessageType.GetLevel1Summary,
-                        o: JSON.stringify({ OMSId: 1 }),
-                      }),
-                    )
-                  }, portfolioIntervalDuration)
-                }
               } catch (error) {
                 console.error('[SYSTEM]: cannot parse receive message')
               }
