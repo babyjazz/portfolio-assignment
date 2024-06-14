@@ -1,6 +1,6 @@
 import { IS_DEV } from '@/constants/env'
 import { websocketMiddleware } from '@/store/middlewares/websocket'
-import rootReducer from '@/store/reducers'
+import rootReducer, { serviceMiddleware } from '@/store/reducers'
 import { configureStore } from '@reduxjs/toolkit'
 import { PERSIST, REGISTER, persistStore } from 'redux-persist'
 
@@ -11,7 +11,9 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [REGISTER, PERSIST],
       },
-    }).concat(websocketMiddleware),
+    })
+      .concat(serviceMiddleware)
+      .concat(websocketMiddleware),
   devTools: IS_DEV,
 })
 

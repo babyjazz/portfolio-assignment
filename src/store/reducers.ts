@@ -1,5 +1,6 @@
 import { portfolioSlice } from './portfolio'
 import { websocketSlice } from './websocket'
+import { portfolioApi } from '@/services/portfolio'
 import { authSlice } from '@/store/authentication'
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
@@ -28,6 +29,9 @@ const rootReducer = combineReducers({
     portfolioPersistConfig,
     portfolioSlice.reducer,
   ),
+  [portfolioApi.reducerPath]: portfolioApi.reducer,
 })
+
+export const serviceMiddleware = [portfolioApi.middleware]
 
 export default rootReducer

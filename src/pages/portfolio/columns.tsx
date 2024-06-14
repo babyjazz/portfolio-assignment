@@ -1,0 +1,53 @@
+import { IPortfolioApi } from '@/types/portfolio'
+import { cn } from '@/utils/classname'
+import { createColumnHelper } from '@tanstack/react-table'
+
+const columnHelper = createColumnHelper<IPortfolioApi>()
+
+export const columns = [
+  columnHelper.accessor('name', {
+    header: () => 'Market',
+    cell: ({ getValue }) => getValue(),
+    meta: {
+      column: {
+        className: () => 'text-left',
+      },
+      header: {
+        className: () => 'text-left',
+      },
+    },
+  }),
+  columnHelper.accessor('price', {
+    header: () => 'Price',
+    cell: ({ getValue }) => getValue(),
+  }),
+  columnHelper.accessor('change', {
+    header: () => '24H Change',
+    cell: ({ getValue }) => getValue(),
+    meta: {
+      column: {
+        className: ({ original }) => {
+          if (original.percentChange === 0) return ''
+          return original.percentChange < 0 ? 'text-red-100' : 'text-green-100'
+        },
+      },
+    },
+  }),
+  columnHelper.accessor('percentChange', {
+    header: () => '24H %',
+    cell: ({ getValue }) => getValue(),
+    meta: {
+      column: {
+        className: ({ original }) => {
+          const className = ['text-right']
+          if (original.percentChange !== 0) {
+            className.push(
+              original.percentChange < 0 ? 'text-red-100' : 'text-green-100',
+            )
+          }
+          return cn(className)
+        },
+      },
+    },
+  }),
+]

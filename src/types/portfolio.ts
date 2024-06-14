@@ -26,3 +26,11 @@ export interface IPortfolio {
   AskOrderCt: number
   Rolling24HrPxChangePercent: number
 }
+
+export interface IPortfolioApi {
+  id: number
+  name: string
+  price: number
+  change: number
+  percentChange: number
+}

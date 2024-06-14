@@ -9,6 +9,7 @@ export default {
         'black-200': 'rgb(var(--black-200-color))',
         'black-300': 'rgb(var(--black-300-color))',
         'red-100': 'rgb(var(--red-100-color))',
+        'green-100': 'rgb(var(--green-100-color))',
       },
       backgroundColor: {
         theme: {
