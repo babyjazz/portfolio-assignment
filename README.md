@@ -14,6 +14,8 @@ pnpm i
 ## Setup Environment
 - Copy `.env.example` to  `.env.development.local` (create `.env.production.local` in the case of build production)
 
+- or use .env and not to change anything
+
 ## Run development
 ```
 pnpm dev
