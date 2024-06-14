@@ -10,4 +10,5 @@ export enum MessageType {
 export enum WssFunctionNameMessageType {
   AuthenticateUser = 'AuthenticateUser',
   GetLevel1Summary = 'GetLevel1Summary',
+  LogOut = 'LogOut',
 }

@@ -101,6 +101,10 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
             )
             break
 
+          case WssFunctionNameMessageType.LogOut:
+            dispatch(authSlice.actions.logout())
+            break
+
           default:
             break
         }
