@@ -1,12 +1,16 @@
-import { MessageType } from '@/enums/websocket'
+import { MessageType, WssFunctionNameMessageType } from '@/enums/websocket'
 import type { Action } from '@/store'
 import { authSlice } from '@/store/authentication'
+import { portfolioSlice } from '@/store/portfolio'
 import { websocketSlice } from '@/store/websocket'
 import { IWebsocketMeta } from '@/store/websocket/slice'
 import { Middleware } from '@reduxjs/toolkit'
 
+const portfolioIntervalDuration = 5000
+
 export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
   let wss: WebSocket | null
+  let portfolioInterval: null | ReturnType<typeof setInterval> = null
   return (next) => (action) => {
     switch ((action as Action<string, string>).type) {
       case websocketSlice.actions.connect().type:
@@ -26,8 +30,27 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
                     o: JSON.parse(data?.o || '{}'),
                   }),
                 )
+
+                // Interval fetch portfolio every 5s
+                if (!portfolioInterval) {
+                  portfolioInterval = setInterval(() => {
+                    dispatch(
+                      websocketSlice.actions.send({
+                        n: WssFunctionNameMessageType.GetLevel1Summary,
+                        o: JSON.stringify({ OMSId: 1 }),
+                      }),
+                    )
+                  }, portfolioIntervalDuration)
+                }
               } catch (error) {
                 console.error('[SYSTEM]: cannot parse receive message')
+              }
+            }
+            wss.onclose = () => {
+              if (portfolioInterval && wss) {
+                clearInterval(portfolioInterval)
+                portfolioInterval = null
+                wss = null
               }
             }
           }
@@ -59,7 +82,7 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
           payload: IWebsocketMeta['receive']
         }
         switch (_action.payload?.n) {
-          case 'AuthenticateUser':
+          case WssFunctionNameMessageType.AuthenticateUser:
             {
               if (_action.payload?.o?.Authenticated) {
                 dispatch(authSlice.actions.auth(_action.payload?.o))
@@ -68,7 +91,25 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
               }
             }
             break
+
+          case WssFunctionNameMessageType.GetLevel1Summary:
+            dispatch(
+              portfolioSlice.actions.setPortfolio(
+                _action.payload?.o?.map((o: string) => {
+                  return JSON.parse(o)
+                }),
+              ),
+            )
+            break
+
+          default:
+            break
         }
+        break
+      }
+
+      case websocketSlice.actions.disconnect().type: {
+        wss?.close()
         break
       }
 

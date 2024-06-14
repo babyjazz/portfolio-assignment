@@ -1,3 +1,4 @@
+import { portfolioSlice } from './portfolio'
 import { websocketSlice } from './websocket'
 import { authSlice } from '@/store/authentication'
 import { combineReducers } from '@reduxjs/toolkit'
@@ -11,14 +12,22 @@ const authenticationPersistConfig = {
   whitelist: ['data'],
 }
 
+const portfolioPersistConfig = {
+  key: 'portfolio',
+  version: 1,
+  storage,
+}
+
 const rootReducer = combineReducers({
   [authSlice.name]: persistReducer(
     authenticationPersistConfig,
     authSlice.reducer,
   ),
   [websocketSlice.name]: websocketSlice.reducer,
+  [portfolioSlice.name]: persistReducer(
+    portfolioPersistConfig,
+    portfolioSlice.reducer,
+  ),
 })
-
-export const serviceMiddlewares = [].concat()
 
 export default rootReducer

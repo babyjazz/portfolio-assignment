@@ -6,3 +6,8 @@ export enum MessageType {
   unsubscribeEvent = 4,
   error = 5,
 }
+
+export enum WssFunctionNameMessageType {
+  AuthenticateUser = 'AuthenticateUser',
+  GetLevel1Summary = 'GetLevel1Summary',
+}

@@ -1,5 +1,5 @@
 import { MessageType } from '@/enums/websocket'
-import { WssFunctionNameMessageType } from '@/types/websocket'
+import { WssFunctionNameMessageType } from '@/enums/websocket'
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface IWebsocketMeta {
@@ -69,8 +69,8 @@ const websocketSlice = createSlice({
     receive(state, action) {
       return { ...state, receive: action.payload }
     },
-    disconnect(state) {
-      return { ...state, isConnected: false }
+    disconnect() {
+      return initialState
     },
   },
 })

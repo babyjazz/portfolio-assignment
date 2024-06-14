@@ -2,12 +2,16 @@ import { IS_DEV } from '@/constants/env'
 import { websocketMiddleware } from '@/store/middlewares/websocket'
 import rootReducer from '@/store/reducers'
 import { configureStore } from '@reduxjs/toolkit'
-import { persistStore } from 'redux-persist'
+import { PERSIST, REGISTER, persistStore } from 'redux-persist'
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(websocketMiddleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [REGISTER, PERSIST],
+      },
+    }).concat(websocketMiddleware),
   devTools: IS_DEV,
 })
 
