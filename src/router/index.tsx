@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Navbar from '@/components/Navbar'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import { WEBSOCKET_URL } from '@/constants/env'
 import { routePathnames } from '@/constants/routesPathName'
@@ -24,16 +25,18 @@ export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={routePathnames.index} element={<Home />} />
         <Route path={routePathnames.login} element={<Login />} />
-        <Route
-          path={routePathnames.portfolio}
-          element={
-            <ProtectedRoute>
-              <Portfolio />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="" element={<Navbar />}>
+          <Route path={routePathnames.index} element={<Home />} />
+          <Route
+            path={routePathnames.portfolio}
+            element={
+              <ProtectedRoute>
+                <Portfolio />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
