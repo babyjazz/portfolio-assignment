@@ -1,13 +1,14 @@
+import { websocketSlice } from '@/store/websocket'
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { accessToken: null }
+const initialState = {}
 
 const authenticationSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
-    refreshToken(state, action) {
-      state.accessToken = action.payload?.accessToken
+    login(state, action) {
+      return action.payload
     },
     logout() {
       return initialState

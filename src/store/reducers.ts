@@ -1,5 +1,5 @@
 import { authenticationSlice } from './authentication/slice'
-import { websocketSlice } from '@/store/websocket/slice'
+import { websocketSlice } from './websocket'
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
