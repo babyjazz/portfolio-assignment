@@ -1,14 +1,25 @@
-import { websocketSlice } from '@/store/websocket'
+import { IAuth, IAuthError } from '@/types/authentication'
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {}
+export interface IAuthState {
+  data: IAuth | null
+  error: IAuthError | null
+}
+
+const initialState: IAuthState = {
+  data: null,
+  error: null,
+}
 
 const authenticationSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
-    login(state, action) {
-      return action.payload
+    auth(_, action) {
+      return { ...initialState, data: action.payload }
+    },
+    error(_, action) {
+      return { ...initialState, error: action.payload }
     },
     logout() {
       return initialState
@@ -16,6 +27,4 @@ const authenticationSlice = createSlice({
   },
 })
 
-const authenticationAction = authenticationSlice.actions
-
-export { authenticationAction, authenticationSlice }
+export default authenticationSlice

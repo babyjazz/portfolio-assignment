@@ -1,5 +1,6 @@
 import { MessageType } from '@/enums/websocket'
 import type { Action } from '@/store'
+import { authSlice } from '@/store/authentication'
 import { websocketSlice } from '@/store/websocket'
 import { IWebsocketMeta } from '@/store/websocket/slice'
 import { Middleware } from '@reduxjs/toolkit'
@@ -7,12 +8,12 @@ import { Middleware } from '@reduxjs/toolkit'
 export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
   let wss: WebSocket | null
   return (next) => (action) => {
-    const _action = action as Action // replace unknow type from middleware
-    switch (_action.type) {
+    switch ((action as Action<string, string>).type) {
       case websocketSlice.actions.connect().type:
         {
+          const _action = action as Action<string, string> // replace unknow type from middleware
           if (!wss) {
-            wss = new WebSocket((_action as Action<string, string>).payload)
+            wss = new WebSocket(_action.payload)
             wss.onopen = () => {
               dispatch(websocketSlice.actions.connected())
             }
@@ -33,24 +34,43 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
         }
         break
 
-      case websocketSlice.actions.send('').type:
+      case websocketSlice.actions.send(null).type: {
+        const _action = action as {
+          type: Action['type']
+          payload: Pick<IWebsocketMeta['send'], 'n' | 'o'>
+        }
         if (wss) {
           const i = getState().wss.send.i
           const payload = {
             m: MessageType.send,
             i: i + 2,
-            ...(
-              action as {
-                type: Action['type']
-                payload: Pick<IWebsocketMeta['send'], 'n' | 'o'>
-              }
-            ).payload,
+            ..._action.payload,
           }
           wss?.send(JSON.stringify(payload))
 
           return next({ type: _action.type, payload })
         }
         break
+      }
+
+      case websocketSlice.actions.receive(null).type: {
+        const _action = action as {
+          type: string
+          payload: IWebsocketMeta['receive']
+        }
+        switch (_action.payload?.n) {
+          case 'AuthenticateUser':
+            {
+              if (_action.payload?.o?.Authenticated) {
+                dispatch(authSlice.actions.auth(_action.payload?.o))
+              } else {
+                dispatch(authSlice.actions.error(_action.payload?.o))
+              }
+            }
+            break
+        }
+        break
+      }
 
       default:
         break

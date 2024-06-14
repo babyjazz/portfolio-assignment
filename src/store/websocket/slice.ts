@@ -1,4 +1,5 @@
 import { MessageType } from '@/enums/websocket'
+import { WssFunctionNameMessageType } from '@/types/websocket'
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface IWebsocketMeta {
@@ -10,12 +11,22 @@ export interface IWebsocketMeta {
     /** identity */
     i: number
     /** function name */
-    n: string | null
+    n: WssFunctionNameMessageType | null
     /** payload */
     o: string | null
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  receive: any
+  receive: {
+    /** The type of the message */
+    m: MessageType
+    /** identity */
+    i: number
+    /** function name */
+    n: WssFunctionNameMessageType | null
+    /** payload */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    o: any
+  }
 }
 
 const initialState: IWebsocketMeta = {
@@ -27,7 +38,12 @@ const initialState: IWebsocketMeta = {
     n: null,
     o: null,
   },
-  receive: null,
+  receive: {
+    m: MessageType.receive,
+    i: 0,
+    n: null,
+    o: null,
+  },
 }
 
 const websocketSlice = createSlice({

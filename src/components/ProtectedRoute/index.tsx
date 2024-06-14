@@ -2,14 +2,14 @@ import { ReactElement } from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { routePathnames } from '@/constants/routesPathName'
-import { websocketSelector } from '@/store/websocket'
+import { authSelectors } from '@/store/authentication'
 
 interface IProtectedRouteProps {
   children: ReactElement
 }
 
 export default function ProtectedRoute({ children }: IProtectedRouteProps) {
-  const loginResult = useSelector(websocketSelector.wssReceiveData)
+  const loginResult = useSelector(authSelectors.auth)
 
   if (!loginResult?.Authenticated) {
     return <Navigate to={routePathnames.login} replace />

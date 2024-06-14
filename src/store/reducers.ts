@@ -1,5 +1,5 @@
-import { authenticationSlice } from './authentication/slice'
 import { websocketSlice } from './websocket'
+import { authSlice } from '@/store/authentication'
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
@@ -8,12 +8,13 @@ const authenticationPersistConfig = {
   key: 'auth',
   version: 1,
   storage,
+  whitelist: ['data'],
 }
 
 const rootReducer = combineReducers({
-  [authenticationSlice.name]: persistReducer(
+  [authSlice.name]: persistReducer(
     authenticationPersistConfig,
-    authenticationSlice.reducer,
+    authSlice.reducer,
   ),
   [websocketSlice.name]: websocketSlice.reducer,
 })

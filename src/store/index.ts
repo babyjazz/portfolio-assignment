@@ -2,6 +2,7 @@ import { IS_DEV } from '@/constants/env'
 import { websocketMiddleware } from '@/store/middlewares/websocket'
 import rootReducer from '@/store/reducers'
 import { configureStore } from '@reduxjs/toolkit'
+import { persistStore } from 'redux-persist'
 
 export const store = configureStore({
   reducer: rootReducer,
@@ -9,6 +10,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(websocketMiddleware),
   devTools: IS_DEV,
 })
+
+export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState> // Might require additional configuration
