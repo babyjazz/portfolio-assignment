@@ -1,1 +1,1 @@
-export { default as Logo } from 'assets/logo.webp'
+export { default as Logo } from '@/assets/images/logo.webp'
