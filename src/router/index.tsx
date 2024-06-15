@@ -8,6 +8,7 @@ import { routePathnames } from '@/constants/routesPathName'
 import NotFoundPage from '@/pages/404'
 import Home from '@/pages/Home'
 import Login from '@/pages/Login'
+import Markets from '@/pages/Markets'
 import Portfolio from '@/pages/portfolio'
 import { websocketSlice } from '@/store/websocket'
 
@@ -28,6 +29,7 @@ export default function Router() {
         <Route path={routePathnames.login} element={<Login />} />
         <Route path="" element={<Navbar />}>
           <Route path={routePathnames.index} element={<Home />} />
+          <Route path={routePathnames.markets} element={<Markets />} />
           <Route
             path={routePathnames.portfolio}
             element={

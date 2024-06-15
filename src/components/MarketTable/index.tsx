@@ -13,11 +13,11 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual'
 
 export default function MarketTable() {
-  const { data: portfolio = [] } = useGetMarketsQuery(undefined, {
+  const { data: markets = [] } = useGetMarketsQuery(undefined, {
     pollingInterval: 5000,
   })
   const table = useReactTable({
-    data: portfolio,
+    data: markets,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),

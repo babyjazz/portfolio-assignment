@@ -1,3 +1,3 @@
-export interface IPortfolio {
-  name: string
-}
+import { IMarket } from '@/types/markets'
+
+export type IPortfolio = IMarket['name']
