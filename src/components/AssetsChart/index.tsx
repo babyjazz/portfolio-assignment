@@ -1,39 +1,53 @@
+import { useMemo } from 'react'
 import { Pie } from 'react-chartjs-2'
+import { useSelector } from 'react-redux'
+import { portfolioSelectors } from '@/store/portfolio'
+import { IMarket } from '@/types/markets'
+import { stringToRGB } from '@/utils/stringToRGB'
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js'
 
 ChartJS.register(ArcElement, Tooltip, Legend)
 
-export default function AssetsChart() {
-  const data = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [
-      {
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        backgroundColor: [
-          'rgba(255, 99, 132)',
-          'rgba(54, 162, 235)',
-          'rgba(255, 206, 86)',
-          'rgba(75, 192, 192)',
-          'rgba(153, 102, 255)',
-          'rgba(255, 159, 64)',
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
-        borderWidth: 1,
-      },
-    ],
-  }
+const options = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+  responsive: true,
+}
+
+interface IAssetChartProps {
+  data: IMarket[]
+}
+
+export default function AssetsChart({ data }: IAssetChartProps) {
+  const portfolio = useSelector(portfolioSelectors.portfolio)
+
+  const chartData = useMemo(() => {
+    const _data: number[] = []
+    const bgColors: string[] = []
+    data.forEach((m) => {
+      _data.push(m.price)
+      bgColors.push(stringToRGB(m.name))
+    })
+    return {
+      labels: portfolio,
+      datasets: [
+        {
+          data: _data,
+          backgroundColor: bgColors,
+          borderColor: bgColors,
+          borderWidth: 1,
+        },
+      ],
+    }
+  }, [data, portfolio])
 
   return (
-    <div className="w-full">
-      <Pie data={data} />
+    <div className="mx-auto flex w-fit flex-col items-end gap-8">
+      <span>Balance: 99,999</span>
+      <Pie data={chartData} options={options} />
     </div>
   )
 }

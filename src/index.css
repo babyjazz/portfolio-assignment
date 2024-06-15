@@ -48,6 +48,11 @@
   }
 }
 
+html,
+body {
+  width: 100vw;
+}
+
 @layer base {
   :root {
     font-family: 'FF Mark bold';

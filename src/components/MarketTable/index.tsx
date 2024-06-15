@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { columns } from './columns'
+import Table from '@/components/ui/Table'
 import { useGetMarketsQuery } from '@/services/markets'
 import { IMarket } from '@/types/markets'
 import { cn } from '@/utils/classname'
@@ -35,7 +36,7 @@ export default function MarketTable() {
   return (
     <div ref={parentRef}>
       <div style={{ height: `${virtualizer.getTotalSize()}px` }}>
-        <table className="w-full">
+        <Table className="w-full">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -86,7 +87,7 @@ export default function MarketTable() {
               )
             })}
           </tbody>
-        </table>
+        </Table>
       </div>
     </div>
   )
