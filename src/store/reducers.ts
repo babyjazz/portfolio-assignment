@@ -1,7 +1,8 @@
 import { portfolioSlice } from './portfolio'
-import { websocketSlice } from './websocket'
-import { portfolioApi } from '@/services/portfolio'
+import { marketsApi } from '@/services/markets'
 import { authSlice } from '@/store/authentication'
+import { summaryLevel1Slice } from '@/store/summaryLevel1'
+import { websocketSlice } from '@/store/websocket'
 import { combineReducers } from '@reduxjs/toolkit'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
@@ -25,13 +26,14 @@ const rootReducer = combineReducers({
     authSlice.reducer,
   ),
   [websocketSlice.name]: websocketSlice.reducer,
+  [summaryLevel1Slice.name]: summaryLevel1Slice.reducer,
+  [marketsApi.reducerPath]: marketsApi.reducer,
   [portfolioSlice.name]: persistReducer(
     portfolioPersistConfig,
     portfolioSlice.reducer,
   ),
-  [portfolioApi.reducerPath]: portfolioApi.reducer,
 })
 
-export const serviceMiddleware = [portfolioApi.middleware]
+export const serviceMiddleware = [marketsApi.middleware]
 
 export default rootReducer

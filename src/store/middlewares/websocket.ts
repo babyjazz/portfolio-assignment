@@ -1,7 +1,7 @@
 import { MessageType, WssFunctionNameMessageType } from '@/enums/websocket'
 import type { Action } from '@/store'
 import { authSlice } from '@/store/authentication'
-import { portfolioSlice } from '@/store/portfolio'
+import { summaryLevel1Slice } from '@/store/summaryLevel1'
 import { websocketSlice } from '@/store/websocket'
 import { IWebsocketMeta } from '@/store/websocket/slice'
 import setIntervalIntermediate from '@/utils/setIntervalIntermediate'
@@ -9,7 +9,7 @@ import { Middleware } from '@reduxjs/toolkit'
 
 export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
   let wss: WebSocket | null
-  let portfolioInterval: null | ReturnType<typeof setInterval> = null
+  let summaryLevel1Interval: null | ReturnType<typeof setInterval> = null
   return (next) => (action) => {
     switch ((action as Action<string, string>).type) {
       case websocketSlice.actions.connect().type:
@@ -20,9 +20,9 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
             wss.onopen = () => {
               dispatch(websocketSlice.actions.connected())
 
-              // Interval fetch portfolio every 5s
-              if (!portfolioInterval) {
-                portfolioInterval = setIntervalIntermediate(() => {
+              // Interval fetch summaryLevel1 every 5s
+              if (!summaryLevel1Interval) {
+                summaryLevel1Interval = setIntervalIntermediate(() => {
                   dispatch(
                     websocketSlice.actions.send({
                       n: WssFunctionNameMessageType.GetLevel1Summary,
@@ -46,9 +46,9 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
               }
             }
             wss.onclose = () => {
-              if (portfolioInterval && wss) {
-                clearInterval(portfolioInterval)
-                portfolioInterval = null
+              if (summaryLevel1Interval && wss) {
+                clearInterval(summaryLevel1Interval)
+                summaryLevel1Interval = null
                 wss = null
               }
             }
@@ -93,7 +93,7 @@ export const websocketMiddleware: Middleware = ({ getState, dispatch }) => {
 
           case WssFunctionNameMessageType.GetLevel1Summary:
             dispatch(
-              portfolioSlice.actions.setPortfolio(
+              summaryLevel1Slice.actions.setSummaryLevel1(
                 _action.payload?.o?.map((o: string) => {
                   return JSON.parse(o)
                 }),

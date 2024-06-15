@@ -8,6 +8,7 @@ export default {
         'black-100': 'rgb(var(--black-100-color))',
         'black-200': 'rgb(var(--black-200-color))',
         'black-300': 'rgb(var(--black-300-color))',
+        'black-400': 'rgb(var(--black-400-color))',
         'red-100': 'rgb(var(--red-100-color))',
         'green-100': 'rgb(var(--green-100-color))',
       },
