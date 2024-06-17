@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { Logo } from '@/constants/images'
 import { routePathnames } from '@/constants/routesPathName'
 import { WssFunctionNameMessageType } from '@/enums/websocket'
+import { authSelectors } from '@/store/authentication'
 import { websocketSlice } from '@/store/websocket'
 import { cn } from '@/utils/classname'
 
@@ -25,6 +26,7 @@ const menus = [
 export default function Navbar() {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
+  const auth = useSelector(authSelectors.auth)
 
   const logout = useCallback(() => {
     dispatch(
@@ -54,7 +56,7 @@ export default function Navbar() {
           ))}
         </div>
 
-        <Button onClick={logout}>Logout</Button>
+        {auth?.Authenticated && <Button onClick={logout}>Logout</Button>}
       </div>
 
       <div className="px-8 py-5">
