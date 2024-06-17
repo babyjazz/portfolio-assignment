@@ -20,7 +20,12 @@ export default function Login() {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<ILoginForm>()
+  } = useForm<ILoginForm>({
+    defaultValues: {
+      Username: '',
+      Password: '',
+    },
+  })
   const loginResult = useSelector(authSelectors.auth)
 
   const sendMessage = useCallback(

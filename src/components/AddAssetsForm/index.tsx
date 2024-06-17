@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
-import Select, { ISelect } from '../ui/Select'
 import Button from '@/components/ui/Button'
+import Select, { ISelect } from '@/components/ui/Select'
 import { useGetMarketsQuery } from '@/services/markets'
 import { portfolioSlice } from '@/store/portfolio'
 import { IPortfolio } from '@/types/portfolio'
@@ -19,7 +19,9 @@ export default function AddAssetForm() {
     formState: { errors },
     setValue,
     handleSubmit,
-  } = useForm<IAddAssetForm>({})
+  } = useForm<IAddAssetForm>({
+    defaultValues: { name: '' },
+  })
 
   const marketOptions = useMemo((): ISelect['options'] => {
     return (
@@ -31,7 +33,7 @@ export default function AddAssetForm() {
   }, [markets])
 
   const addPortfolio = useCallback(
-    (name: IPortfolio['name']) => {
+    (name: IPortfolio) => {
       dispatch(portfolioSlice.actions.addPortfolio(name))
     },
     [dispatch],
