@@ -33,7 +33,7 @@ export default function Input({
   return (
     <>
       <input {...props} className={cn(InputVariants({ size, className }))} />
-      {errors && <span className="text-red-100">{errors}</span>}
+      {errors && <span className="mt-2 text-sm text-red-100">{errors}</span>}
     </>
   )
 }
