@@ -27,7 +27,7 @@ pnpm build
 ```
 
 ## Production preview
-production is on firebase [portfolio-btz.web.app](https://portfolio-btz.web.app/login)
+production is on firebase [portfolio-btz.web.app](https://portfolio-btz.web.app)
 
 ## Explaination
 please read [docs](docs.md)
