@@ -6,7 +6,7 @@
  ✅ 2. Authentication
  ✅ 3. Portfolio Management
  ✅ 4. Price Updates (API is bug, so I mocked data)
- ❌ 5. Historical Data and Performance Tracking
+ ❌ 5. Historical Data and Performance Tracking (I don't understand this requirement)
  ✅ 6. State Management
  ✅ 7. Styling
  ✅ 8. Code Quality and Structure

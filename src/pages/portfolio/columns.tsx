@@ -1,6 +1,7 @@
 import { IMarket } from '@/types/markets'
 import { cn } from '@/utils/classname'
 import { createColumnHelper } from '@tanstack/react-table'
+import BigNumber from 'bignumber.js'
 
 const columnHelper = createColumnHelper<IMarket>()
 
@@ -19,7 +20,7 @@ export const columns = [
   }),
   columnHelper.accessor('price', {
     header: () => 'Price',
-    cell: ({ getValue }) => getValue(),
+    cell: ({ getValue }) => BigNumber(getValue()).toFormat(),
   }),
   columnHelper.accessor('change', {
     header: () => '24H Change',
