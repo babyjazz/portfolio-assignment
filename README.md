@@ -26,5 +26,8 @@ Run time is on port 5173; this link [http://localhost:5173](http://localhost:517
 pnpm build
 ```
 
+## Production preview
+production is on firebase [portfolio-btz.web.app](https://portfolio-btz.web.app/login)
+
 ## Explaination
 please read [docs](docs.md)
