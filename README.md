@@ -25,3 +25,6 @@ Run time is on port 5173; this link [http://localhost:5173](http://localhost:517
 ```
 pnpm build
 ```
+
+## Explaination
+please read [docs](docs.md)
